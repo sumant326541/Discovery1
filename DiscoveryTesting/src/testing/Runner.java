@@ -5,7 +5,6 @@ public class Runner {
 	{
 		TestDiscovery run = new TestDiscovery();
 		run.test();
-		
 	}
 	
 }

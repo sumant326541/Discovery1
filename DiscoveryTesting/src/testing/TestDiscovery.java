@@ -12,19 +12,23 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TestDiscovery {
-	public  void test ()
+	WebDriver driver;
+	WebDriverWait wait;
+	
+ public  void test ()
 	{
 		 
 		System.setProperty("webdriver.chrome.driver", "src\\driver\\chromedriver.exe");
 		
-		WebDriver driver=new ChromeDriver();
+		driver=new ChromeDriver();
+		wait=new WebDriverWait(driver, 30);
 		FileReader r =new FileReader();	
-		driver.get("http://go.discovery.com/");
+		
+		driver.get(r.reader("Discovery_url"));
 		driver.manage().window().maximize();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0,1000)");
 		driver.findElement(By.xpath(r.reader("shows"))).click();
-		WebDriverWait wait=new WebDriverWait(driver, 20);
 		WebElement SeeAllShows=wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath( r.reader("seeAllShows"))));
 		SeeAllShows.click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(r.reader("ApolloShows"))));
@@ -60,9 +64,10 @@ public class TestDiscovery {
 		}
 				driver.findElement(By.xpath(r.reader("MenuBar"))).click();
 				driver.findElement(By.xpath(r.reader("MyVideos"))).click();
+				js.executeScript("window.scrollBy(0,350)");
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(r.reader("FavShowsHeader"))));
 				List<WebElement> MyVideo_Fav_Title = driver.findElements(By.xpath(r.reader("FavShowsAvailable")));
 			
-				
 				int count =0;
 				for(int i=0;i<Fav_Title.size();i++)
 				{
@@ -70,16 +75,16 @@ public class TestDiscovery {
 					
 					  {
 					
-					  if(Fav_Title.get(i).equals(MyVideo_Fav_Title.get(j).getText()))
+					  if(Fav_Title.get(i).equals(MyVideo_Fav_Title.get(j).getAttribute("textContent")))
 					   {
-						  System.out.println(i+"th video added to my favorit shows ");
+						  System.out.println("Title of show added to my favorite   "+Fav_Title.get(i));
 						  count=count+1;
 					   }
 					 }
 						
 					 if (count==0)
 					{
-						System.out.println(i+"th  video not added to my favorit shows");
+						System.out.println(Fav_Title.get(i) +"   show not able to add in my favorite shows");
 					}
 				}
 				
@@ -87,9 +92,9 @@ public class TestDiscovery {
 				{
 					for(int j=0;j<MyVideo_Fav_Title.size();j++)
 					  {
-					  if(Unfav_Title.get(i).equals(MyVideo_Fav_Title.get(j).getText()))
+					  if(Unfav_Title.get(i).equals(MyVideo_Fav_Title.get(j).getAttribute("textContent")))
 					   {
-						  System.out.println(i+"th video not removed from my favorit shows ");
+						  System.out.println(Unfav_Title.get(i) + "video not able to make as un-favorite shows ");
 						count=count+1;
 					
 					   }
@@ -97,11 +102,12 @@ public class TestDiscovery {
 					
 					if(count==0)
 					{
-						System.out.println(i+"th vth video  removed from my favorit shows");
+						System.out.println(Unfav_Title.get(i) + "video successfully done as un-favorite shows");
 					}
 				}
 		}
 	
+
 		 
 		}
 
